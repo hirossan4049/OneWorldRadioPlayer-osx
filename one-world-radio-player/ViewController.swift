@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import AVKit
 
 class ViewController: NSViewController {
     @IBOutlet weak var iconImageView: NSImageView!
@@ -40,6 +41,10 @@ class ViewController: NSViewController {
         iconImageView.layer?.cornerRadius = 100
         
         isPlaying = false
+        
+        let radioModel = RadioModel()
+        radioModel.getM3u8()
+
         
     }
     
