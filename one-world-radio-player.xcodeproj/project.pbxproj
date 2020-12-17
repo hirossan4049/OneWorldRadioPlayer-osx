@@ -11,6 +11,7 @@
 		D3B21C8F258B7A4B002A170D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B21C8E258B7A4B002A170D /* ViewController.swift */; };
 		D3B21C91258B7A4C002A170D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3B21C90258B7A4C002A170D /* Assets.xcassets */; };
 		D3B21C94258B7A4C002A170D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3B21C92258B7A4C002A170D /* Main.storyboard */; };
+		D3B21C9F258B7B40002A170D /* NSView+backgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3B21C9E258B7B40002A170D /* NSView+backgroundColor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		D3B21C93258B7A4C002A170D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D3B21C95258B7A4C002A170D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D3B21C96258B7A4C002A170D /* one_world_radio_player.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = one_world_radio_player.entitlements; sourceTree = "<group>"; };
+		D3B21C9E258B7B40002A170D /* NSView+backgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+backgroundColor.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 		D3B21C8B258B7A4B002A170D /* one-world-radio-player */ = {
 			isa = PBXGroup;
 			children = (
+				D3B21C9D258B7B2C002A170D /* Extensions */,
 				D3B21C8C258B7A4B002A170D /* AppDelegate.swift */,
 				D3B21C8E258B7A4B002A170D /* ViewController.swift */,
 				D3B21C90258B7A4C002A170D /* Assets.xcassets */,
@@ -61,6 +64,14 @@
 				D3B21C96258B7A4C002A170D /* one_world_radio_player.entitlements */,
 			);
 			path = "one-world-radio-player";
+			sourceTree = "<group>";
+		};
+		D3B21C9D258B7B2C002A170D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D3B21C9E258B7B40002A170D /* NSView+backgroundColor.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -134,6 +145,7 @@
 			files = (
 				D3B21C8F258B7A4B002A170D /* ViewController.swift in Sources */,
 				D3B21C8D258B7A4B002A170D /* AppDelegate.swift in Sources */,
+				D3B21C9F258B7B40002A170D /* NSView+backgroundColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
