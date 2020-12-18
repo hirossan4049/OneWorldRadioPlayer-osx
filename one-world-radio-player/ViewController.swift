@@ -43,8 +43,11 @@ class ViewController: NSViewController {
         isPlaying = false
         
         let radioModel = RadioModel()
-        radioModel.getM3u8()
+        radioModel.getMedia(completion: fetchedMedia)
 
+    }
+    
+    func fetchedMedia(_ medias:[MediaItem]){
         
     }
     

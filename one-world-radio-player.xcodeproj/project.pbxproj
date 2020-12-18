@@ -57,6 +57,7 @@
 		D3B21C8B258B7A4B002A170D /* one-world-radio-player */ = {
 			isa = PBXGroup;
 			children = (
+				D3B21CA2258B94B4002A170D /* RadioModel.swift */,
 				D3B21C9D258B7B2C002A170D /* Extensions */,
 				D3B21C8C258B7A4B002A170D /* AppDelegate.swift */,
 				D3B21C8E258B7A4B002A170D /* ViewController.swift */,
@@ -64,7 +65,6 @@
 				D3B21C92258B7A4C002A170D /* Main.storyboard */,
 				D3B21C95258B7A4C002A170D /* Info.plist */,
 				D3B21C96258B7A4C002A170D /* one_world_radio_player.entitlements */,
-				D3B21CA2258B94B4002A170D /* RadioModel.swift */,
 			);
 			path = "one-world-radio-player";
 			sourceTree = "<group>";
