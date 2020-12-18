@@ -69,20 +69,23 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
     }
     
     func playObserver(){
+        if !isPlaying{
+            return
+        }
         if medias.count <= 1{
             do{
                 try fetchMedia()
             }catch{
                 print("取得失敗")
-                do{
-                    try fetchMedia()
-                }catch{
-                    print("再取得しましたが、失敗しました。")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self.playObserver()
+
                 }
             }
         }
         if medias.count == 0{
             print("media not found")
+            Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.playerUpdate), userInfo: nil, repeats: false)
             return
         }
         let url = URL(string: self.medias.first!.urlString!)
@@ -117,6 +120,9 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
     
     
     @objc func playerUpdate(){
+        if !isPlaying{
+            return
+        }
         self.isPlayWatcher = !self.isPlayWatcher
         print("playerUPdate")
         playObserver()
@@ -148,12 +154,13 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
         isPlaying = !isPlaying
         
         if isPlaying{
+            self.medias = []
             playObserver()
 //            self.player1?.play()
         }else{
             self.player1?.stop()
             self.player2?.stop()
-            
+            self.medias = []
         }
     }
     
