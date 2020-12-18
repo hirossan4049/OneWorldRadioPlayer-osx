@@ -8,11 +8,11 @@
 import Foundation
 
 struct MediaItem {
-    var duration:   Int?
+    var duration:   Double?
     var title:      String?
     var urlString:  String?
     
-    static func parseM3U(contentsOfFile: String) -> [MediaItem]? {
+    static func parseM3U(baseURL: String = "", contentsOfFile: String) -> [MediaItem]? {
         var mediaItems = [MediaItem]()
         var s = false
         var mediaItem = MediaItem()
@@ -20,11 +20,11 @@ struct MediaItem {
             if item.hasPrefix("#EXTINF:"){
                 s = true
                 let sp = item.components(separatedBy: ",")
-                mediaItem.duration = Int(Float(sp[0].replacingOccurrences(of: "#EXTINF:", with: ""))!)
+                mediaItem.duration = Double(sp[0].replacingOccurrences(of: "#EXTINF:", with: ""))!
                 mediaItem.title = sp[1...].joined()
             }else{
                 if s{
-                    mediaItem.urlString = item
+                    mediaItem.urlString = baseURL + item
                     mediaItems.append(mediaItem)
                     s = false
                 }
@@ -64,14 +64,14 @@ class RadioModel{
         return ""
     }
     
-    private func callback(_ url: String){
-        let url = URL(string: url)!
+    private func callback(_ urlString: String){
+        let url = URL(string: urlString)!
         let request = URLRequest(url: url)
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
             guard let data = data else { return }
             do {
                 let str = String(data: data, encoding: .utf8)!
-                let mditm = MediaItem.parseM3U(contentsOfFile: str)
+                let mditm = MediaItem.parseM3U(baseURL: urlString.replacingOccurrences(of: "playlist.m3u8", with: ""), contentsOfFile: str)
                 self.getMediaReturnFnCall(mditm!)
             } catch let error {
                 print(error)

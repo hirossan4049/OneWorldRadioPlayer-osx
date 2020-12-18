@@ -8,12 +8,17 @@
 import Cocoa
 import AVKit
 
-class ViewController: NSViewController {
+class ViewController: NSViewController, AVAudioPlayerDelegate {
     @IBOutlet weak var iconImageView: NSImageView!
     @IBOutlet weak var artistTextField: NSTextField!
     @IBOutlet weak var titleTextField: NSTextField!
     
     @IBOutlet weak var playerButton: NSButton!
+    private var player1:AVAudioPlayer!
+    private var player2:AVAudioPlayer!
+    private var isPlayWatcher = true
+    private var medias: [MediaItem] = []
+    private var isFirstPlay = true
     
     var isPlaying = false {
         didSet{
@@ -41,18 +46,101 @@ class ViewController: NSViewController {
         iconImageView.layer?.cornerRadius = 100
         
         isPlaying = false
+//        self.playerButton.isEnabled = false
         
-        let radioModel = RadioModel()
-        radioModel.getMedia(completion: fetchedMedia)
+        fetchMedia()
 
     }
     
+    func fetchMedia(){
+        let radioModel = RadioModel()
+        radioModel.getMedia(completion: fetchedMedia)
+    }
+    
     func fetchedMedia(_ medias:[MediaItem]){
+//        self.playerButton.isEnabled = true
+        self.medias += medias
+        print("fetching")
+//        if isFirstPlay{
+//            playObserver()
+//            isFirstPlay = false
+//        }
+    }
+    
+    func playObserver(){
+        if medias.count <= 1{
+            do{
+                try fetchMedia()
+            }catch{
+                print("取得失敗")
+                do{
+                    try fetchMedia()
+                }catch{
+                    print("再取得しましたが、失敗しました。")
+                }
+            }
+        }
+        if medias.count == 0{
+            print("media not found")
+            return
+        }
+        let url = URL(string: self.medias.first!.urlString!)
+        Timer.scheduledTimer(timeInterval: Double(self.medias.first!.duration!) - 0.1, target: self, selector: #selector(self.playerUpdate), userInfo: nil, repeats: false)
         
+        do {
+            let data = try Data(contentsOf: url!)
+            print(self.isPlayWatcher)
+            if isPlayWatcher{
+                self.player1 = try AVAudioPlayer(data: data)
+    //                self.player.prepareToPlay()
+//                self.player1.delegate = self
+                self.player1.play()
+                self.player2?.stop()
+            }else{
+                self.player2 = try AVAudioPlayer(data: data)
+    //                self.player.prepareToPlay()
+//                self.player1.delegate = self
+                self.player2.play()
+                self.player1?.stop()
+            }
+            self.medias.remove(at: 0)
+        } catch {
+            NSLog("cannot play audio")
+        }
+        print("PLAY OBSERVER")
+    }
+    
+    
+    
+    @objc func playerUpdate(){
+        self.isPlayWatcher = !self.isPlayWatcher
+        playObserver()
+    }
+
+    
+    
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if flag {
+            print("ended")
+//            self.playObserver()
+            // After successfully finish song playing will stop audio player and remove from memory
+//            print("Audio player finished playing")
+//            self.player?.stop()
+//            self.player = nil
+            // Write code to play next audio.
+        }
     }
     
     @IBAction func playBtn(_ sender: Any) {
         isPlaying = !isPlaying
+        
+        if isPlaying{
+            playObserver()
+        }else{
+            self.player1?.stop()
+            self.player2?.stop()
+            
+        }
     }
     
     override var representedObject: Any? {
