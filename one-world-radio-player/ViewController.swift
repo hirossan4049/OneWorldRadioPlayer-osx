@@ -63,6 +63,7 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
         print("fetching")
 //        if isFirstPlay{
 //            playObserver()
+////            self.player1.play()
 //            isFirstPlay = false
 //        }
     }
@@ -85,23 +86,26 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
             return
         }
         let url = URL(string: self.medias.first!.urlString!)
-        Timer.scheduledTimer(timeInterval: Double(self.medias.first!.duration!) - 0.1, target: self, selector: #selector(self.playerUpdate), userInfo: nil, repeats: false)
+        print(self.medias.first!.duration!)
+        Timer.scheduledTimer(timeInterval: self.medias.first!.duration!, target: self, selector: #selector(self.playerUpdate), userInfo: nil, repeats: false)
         
         do {
             let data = try Data(contentsOf: url!)
             print(self.isPlayWatcher)
             if isPlayWatcher{
+                print("PLAYER1")
                 self.player1 = try AVAudioPlayer(data: data)
-    //                self.player.prepareToPlay()
+                self.player1.prepareToPlay()
 //                self.player1.delegate = self
                 self.player1.play()
-                self.player2?.stop()
+//                self.player2?.stop()
             }else{
+                print("PLAYER2")
                 self.player2 = try AVAudioPlayer(data: data)
-    //                self.player.prepareToPlay()
-//                self.player1.delegate = self
+                self.player2.prepareToPlay()
+//                self.player2.delegate = self
                 self.player2.play()
-                self.player1?.stop()
+//                self.player1?.stop()
             }
             self.medias.remove(at: 0)
         } catch {
@@ -114,14 +118,23 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
     
     @objc func playerUpdate(){
         self.isPlayWatcher = !self.isPlayWatcher
+        print("playerUPdate")
         playObserver()
     }
 
     
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+//        if self.isPlayWatcher{
+//            self.player2.play()
+//        }else{
+//            self.player1.play()
+//        }
         if flag {
             print("ended")
+            
+
+            
 //            self.playObserver()
             // After successfully finish song playing will stop audio player and remove from memory
 //            print("Audio player finished playing")
@@ -136,6 +149,7 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
         
         if isPlaying{
             playObserver()
+//            self.player1?.play()
         }else{
             self.player1?.stop()
             self.player2?.stop()
