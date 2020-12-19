@@ -52,9 +52,12 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
 
     }
     
+    
+    
     func fetchMedia(){
         let radioModel = RadioModel()
         radioModel.getMedia(completion: fetchedMedia)
+        radioModel.getCurrentMusic(completion: fetchedMusic)
     }
     
     func fetchedMedia(_ medias:[MediaItem]){
@@ -69,6 +72,13 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
             playObserver()
             self.player1?.play()
         }
+    }
+    
+    func fetchedMusic(_ music: Music){
+        artistTextField.stringValue = music.artist ?? "artist not found"
+        titleTextField.stringValue = music.title ?? "title not found"
+        iconImageView.image = NSImage(url: "https://pl-cache.weareone.world/minimal/image/" + music.imageRef!)
+        
     }
     
     func playObserver(){

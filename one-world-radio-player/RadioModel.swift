@@ -35,6 +35,12 @@ struct MediaItem {
     }
 }
 
+struct Music {
+    var artist: String?
+    var title: String?
+    var imageRef: String?
+}
+
 
 class RadioModel{
     
@@ -43,6 +49,28 @@ class RadioModel{
     func getMedia(completion: @escaping ([MediaItem]) -> ()){
         getMediaReturnFnCall = completion
         getM3u8(completion: callback)
+    }
+    
+    func getCurrentMusic(completion:@escaping (Music) -> ()){
+        let url = URL(string: "https://pl-cache.weareone.world/minimal/nowplaying?stream=https://playerservices.streamtheworld.com/api/livestream-redirect/OWR_INTERNATIONAL_ADP.m3u8")!
+
+        let request = URLRequest(url: url)
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            guard let data = data else { return }
+            do {
+//                let str = String(data: data, encoding: .utf8)!
+                let items = try JSONSerialization.jsonObject(with: data) as! Dictionary<String, Any>
+                var music = Music()
+                music.artist = items["artist"] as! String
+                music.title = items["title"] as! String
+                music.imageRef = String(items["imageRef"] as! Int)
+                completion(music)
+            } catch let error {
+                print(error)
+            }
+        }
+        task.resume()
+    
     }
     
     
