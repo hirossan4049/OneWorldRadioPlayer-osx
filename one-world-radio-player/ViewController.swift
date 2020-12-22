@@ -68,10 +68,10 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
 //            playObserver()
 //            isFirstPlay = false
 //        }
-        if !isPlaying{
-            playObserver()
-            self.player1?.play()
-        }
+//        if !isPlaying{
+//            playObserver()
+//            self.player1?.play()
+//        }
     }
     
     func fetchedMusic(_ music: Music){
@@ -104,8 +104,8 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
         let url = URL(string: self.medias.first!.urlString!)
         print(self.medias.first!.duration!)
         print("TIMER")
-        Timer.scheduledTimer(timeInterval: self.medias.first!.duration! - 1, target: self, selector: #selector(self.playerUpdate), userInfo: nil, repeats: false)
-        Timer.scheduledTimer(timeInterval: self.medias.first!.duration! - 0.5, target: self, selector: #selector(self.playerPlay), userInfo: nil, repeats: false)
+        Timer.scheduledTimer(timeInterval: self.medias.first!.duration! - 4, target: self, selector: #selector(self.playerUpdate), userInfo: nil, repeats: false)
+        Timer.scheduledTimer(timeInterval: self.medias.first!.duration!, target: self, selector: #selector(self.playerPlay), userInfo: nil, repeats: false)
         print("TIMER SETTED")
 
         
@@ -115,14 +115,14 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
             if isPlayWatcher{
                 print("PLAYER1")
                 self.player1 = try AVAudioPlayer(data: data)
-                self.player1.prepareToPlay()
+//                self.player1.prepareToPlay()
 //                self.player1.delegate = self
 //                self.player1.play()
 //                self.player2?.stop()
             }else{
                 print("PLAYER2")
                 self.player2 = try AVAudioPlayer(data: data)
-                self.player2.prepareToPlay()
+//                self.player2.prepareToPlay()
 //                self.player2.delegate = self
 //                self.player2.play()
 //                self.player1?.stop()
@@ -146,10 +146,13 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
     }
     
     @objc func playerPlay(){
+        if !isPlaying{
+            return
+        }
         if isPlayWatcher{
-            self.player2.play()
+            self.player2?.play()
         }else{
-            self.player1.play()
+            self.player1?.play()
         }
     }
 
@@ -181,7 +184,7 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
         if isPlaying{
             self.medias = []
             playObserver()
-//            self.player1?.play()
+            self.player1?.play()
         }else{
             self.player1?.stop()
             self.player2?.stop()

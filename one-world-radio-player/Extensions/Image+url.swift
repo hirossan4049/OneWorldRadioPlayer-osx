@@ -16,7 +16,12 @@ extension NSImage {
             let data = try Data(contentsOf: url!)
             let items = try JSONSerialization.jsonObject(with: data) as! Dictionary<String, Any>
             let image = items["base64image"] as! String
-            self.init(data: Data(base64Encoded: image)!)!
+            let imagedata = Data(base64Encoded: image)
+            if imagedata == nil{
+                self.init()
+            }else{
+                self.init(data: imagedata!)!
+            }
             return
         } catch let err {
             print("Error : \(err.localizedDescription)")
