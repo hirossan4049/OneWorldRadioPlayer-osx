@@ -51,8 +51,7 @@ class RadioModel{
         getM3u8(completion: callback)
     }
     
-    func
-    getCurrentMusic(completion:@escaping (Music) -> ()){
+    func getCurrentMusic(completion:@escaping (Music) -> ()){
         let url = URL(string: "https://pl-cache.weareone.world/minimal/nowplaying?stream=https://playerservices.streamtheworld.com/api/livestream-redirect/OWR_INTERNATIONAL_ADP.m3u8")!
 
         let request = URLRequest(url: url)

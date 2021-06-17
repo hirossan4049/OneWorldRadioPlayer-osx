@@ -14,9 +14,10 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
     @IBOutlet weak var titleTextField: NSTextField!
     
     @IBOutlet weak var playerButton: NSButton!
-    private var player1:AVAudioPlayer!
-    private var player2:AVAudioPlayer!
-    private var isPlayWatcher = true
+    private var player1:Player!
+    private var player2:Player!
+    private var isPlayWatcher = false
+    
     private var medias: [MediaItem] = []
     private var isFirstPlay = true
     
@@ -41,6 +42,9 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
         self.view.backgroundColor = .black
         self.view.window!.titlebarAppearsTransparent = true
         self.view.window?.backgroundColor = .black
+        
+        player1 = Player()
+        player2 = Player()
         
         iconImageView.wantsLayer = true
         iconImageView.layer?.cornerRadius = 100
@@ -98,13 +102,13 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
         }
         if medias.count == 0{
             print("media not found")
-            Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.playerUpdate), userInfo: nil, repeats: false)
+//            Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.playerUpdate), userInfo: nil, repeats: false)
             return
         }
         let url = URL(string: self.medias.first!.urlString!)
         print(self.medias.first!.duration!)
         print("TIMER")
-        Timer.scheduledTimer(timeInterval: self.medias.first!.duration! - 4, target: self, selector: #selector(self.playerUpdate), userInfo: nil, repeats: false)
+        Timer.scheduledTimer(timeInterval: self.medias.first!.duration! - 0.5, target: self, selector: #selector(self.playerUpdate), userInfo: nil, repeats: false)
         Timer.scheduledTimer(timeInterval: self.medias.first!.duration!, target: self, selector: #selector(self.playerPlay), userInfo: nil, repeats: false)
         print("TIMER SETTED")
 
@@ -113,15 +117,17 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
             let data = try Data(contentsOf: url!)
             print(self.isPlayWatcher)
             if isPlayWatcher{
-                print("PLAYER1")
-                self.player1 = try AVAudioPlayer(data: data)
+                print("PLAYER1", data)
+                self.player1.load(data: data)
+//                self.player1 = try AVAudioPlayer(data: data)
 //                self.player1.prepareToPlay()
 //                self.player1.delegate = self
 //                self.player1.play()
 //                self.player2?.stop()
             }else{
                 print("PLAYER2")
-                self.player2 = try AVAudioPlayer(data: data)
+                self.player2.load(data: data)
+//                self.player2 = try AVAudioPlayer(data: data)
 //                self.player2.prepareToPlay()
 //                self.player2.delegate = self
 //                self.player2.play()
@@ -201,3 +207,29 @@ class ViewController: NSViewController, AVAudioPlayerDelegate {
 
 }
 
+
+class Player{
+    var audioPlayer: AVAudioPlayer!
+    func load(data: Data) {
+        print("loaded PLAYER")
+        do {
+            // AVAudioPlayerのインスタンス化
+            audioPlayer = try AVAudioPlayer(data: data)
+            // AVAudioPlayerのデリゲートをセット
+            audioPlayer.delegate = self as? AVAudioPlayerDelegate
+            // 音声の再生
+//            audioPlayer.play()
+        } catch {
+            print("error")
+        }
+    }
+    
+    func play(){
+        audioPlayer?.play()
+    }
+    
+    
+    func stop(){
+        audioPlayer?.stop()
+    }
+}
